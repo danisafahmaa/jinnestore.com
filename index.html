@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LapakKu – Jual Beli Barang</title>
+  <meta name="description" content="LapakKu: lapak jual beli barang online. Daftar, login, pasang iklan, dan hubungi penjual.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ========== HALAMAN LOGIN / DAFTAR (tampil pertama) ========== -->
+  <section id="authView" class="auth">
+    <div class="auth-card">
+      <div class="brand brand-lg">🛍️ Lapak<span>Ku</span></div>
+      <p class="auth-sub">Tempat jual beli barang yang simpel. Masuk untuk mulai.</p>
+
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-auth-tab="login" role="tab">Masuk</button>
+        <button class="tab" data-auth-tab="register" role="tab">Daftar</button>
+      </div>
+
+      <form id="loginForm" class="form" autocomplete="on">
+        <label>Email
+          <input type="email" name="email" required placeholder="nama@email.com" autocomplete="email">
+        </label>
+        <label>Kata sandi
+          <input type="password" name="password" required minlength="6" placeholder="Minimal 6 karakter" autocomplete="current-password">
+        </label>
+        <p class="form-error" id="loginError" role="alert"></p>
+        <button class="btn btn-primary btn-block" type="submit">Masuk</button>
+      </form>
+
+      <form id="registerForm" class="form" hidden autocomplete="on">
+        <label>Nama lengkap
+          <input type="text" name="name" required maxlength="40" placeholder="Nama Anda" autocomplete="name">
+        </label>
+        <label>Email
+          <input type="email" name="email" required placeholder="nama@email.com" autocomplete="email">
+        </label>
+        <label>Nomor WhatsApp
+          <input type="tel" name="phone" required placeholder="08123456789" pattern="[0-9+\s\-]{9,16}" autocomplete="tel">
+        </label>
+        <label>Kata sandi
+          <input type="password" name="password" required minlength="6" placeholder="Minimal 6 karakter" autocomplete="new-password">
+        </label>
+        <p class="form-error" id="registerError" role="alert"></p>
+        <button class="btn btn-primary btn-block" type="submit">Buat Akun</button>
+      </form>
+
+      <p class="note">Demo statis: data akun disimpan di browser Anda (localStorage), bukan di server.</p>
+    </div>
+  </section>
+
+  <!-- ========== HALAMAN UTAMA LAPAK ========== -->
+  <section id="appView" hidden>
+    <header class="topbar">
+      <div class="brand">🛍️ Lapak<span>Ku</span></div>
+      <input id="searchInput" class="search" type="search" placeholder="Cari barang…" aria-label="Cari barang">
+      <div class="topbar-right">
+        <span id="userName" class="user-name"></span>
+        <button id="sellBtn" class="btn btn-primary">+ Jual Barang</button>
+        <button id="logoutBtn" class="btn btn-ghost">Keluar</button>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="view-tabs">
+        <button class="vtab active" data-view="all">Semua Barang</button>
+        <button class="vtab" data-view="mine">Lapak Saya</button>
+        <button class="vtab" data-view="fav">Favorit ❤</button>
+      </div>
+
+      <div class="filters">
+        <select id="categoryFilter" aria-label="Kategori"></select>
+        <select id="sortFilter" aria-label="Urutkan">
+          <option value="new">Terbaru</option>
+          <option value="cheap">Harga termurah</option>
+          <option value="expensive">Harga termahal</option>
+        </select>
+        <span id="resultCount" class="result-count"></span>
+      </div>
+
+      <div id="grid" class="grid"></div>
+      <div id="empty" class="empty" hidden>
+        <div class="empty-emoji">📭</div>
+        <p>Belum ada barang yang cocok.</p>
+      </div>
+    </main>
+  </section>
+
+  <!-- ========== DIALOG TAMBAH / EDIT BARANG ========== -->
+  <dialog id="productDialog">
+    <form id="productForm" class="form dialog-body">
+      <h2 id="productDialogTitle">Jual Barang</h2>
+      <input type="hidden" name="id">
+      <label>Nama barang
+        <input type="text" name="title" required maxlength="60" placeholder="Contoh: Sepeda Lipat 20 inci">
+      </label>
+      <div class="row">
+        <label>Harga (Rp)
+          <input type="number" name="price" required min="0" step="500" placeholder="500000">
+        </label>
+        <label>Kategori
+          <select name="category" id="formCategory" required></select>
+        </label>
+      </div>
+      <label>Kondisi
+        <select name="condition">
+          <option>Baru</option>
+          <option selected>Bekas - Seperti baru</option>
+          <option>Bekas - Layak pakai</option>
+        </select>
+      </label>
+      <label>Deskripsi
+        <textarea name="description" rows="4" maxlength="600" required placeholder="Jelaskan kondisi, kelengkapan, dan alasan menjual."></textarea>
+      </label>
+      <label>Foto (opsional)
+        <input type="file" name="image" accept="image/*">
+      </label>
+      <img id="imagePreview" class="image-preview" alt="Pratinjau foto" hidden>
+      <p class="form-error" id="productError" role="alert"></p>
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-ghost" id="cancelProduct">Batal</button>
+        <button type="submit" class="btn btn-primary">Simpan</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ========== DIALOG DETAIL BARANG ========== -->
+  <dialog id="detailDialog">
+    <div class="dialog-body" id="detailBody"></div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
